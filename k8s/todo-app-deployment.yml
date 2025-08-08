@@ -1,29 +1,27 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-   name: flask-deployment 
-   namespace: clickhouse
+  name: flask-deployment
+  namespace: clickhouse
 spec:
-   replicas: 1
-   selector: 
-     matchLabels:
-       app: flask-apps
-   template:
-     metadata:
-       labels:
-         app: flask-apps
-     spec:
-       initContainers:
-         - name: wait-for-clickhouse
-           image: busybox
-           command:
-             - sh
-             - -c
-             - "until nc -z clickhouse 9000; do echo Waiting for ClickHouse...; sleep 2; done; echo ClickHouse is up!"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-apps
+  template:
+    metadata:
+      labels:
+        app: flask-apps
+    spec:
+      initContainers:
+        - name: wait-for-clickhouse
+          image: busybox
+          command:
+            - sh
+            - -c
+            - "until nc -z clickhouse 9000; do echo Waiting for ClickHouse...; sleep 2; done; echo ClickHouse is up!"
       containers:
-       containers:
         - name: flask-app
           image: root938/clickhouse-db-using:latest
           ports:
-           - containerPort: 5000
-          
+            - containerPort: 5000
