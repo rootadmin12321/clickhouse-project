@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clickhouse-deployment
+  namespace: clickhouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: clickhouse/clickhouse-server:latest
+          ports:
+            - containerPort: 9000
+            - containerPort: 8123
+          envFrom:
+            - configMapRef:
+                name: clickhouse-configmap
+            - secretRef:
+                name: clickhouse-secret
+          volumeMounts:
+            - mountPath: /var/lib/clickhouse
+              name: clickhouse-data
+      volumes:
+        - name: clickhouse-data
+          persistentVolumeClaim:
+            claimName: clickhouse-data  # Reference to the PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: clickhouse-data
+  namespace: clickhouse
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard  # Ensure it's correct

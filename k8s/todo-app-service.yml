@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flask-service
+  namespace: clickhouse
+spec:
+  selector:
+    app: flask-app
+  ports:
+    - protocol: TCP
+      port: 5000   # External port for the service
+      targetPort: 5000  # Port on the Flask container
+  type: ClusterIP

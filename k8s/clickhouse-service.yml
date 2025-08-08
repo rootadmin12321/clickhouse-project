@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: clickhouse
+  namespace: clickhouse
+spec:
+  selector:
+    app: clickhouse
+  ports:
+    - name: clickhouse-port-9000
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+    - name: clickhouse-port-8123
+      protocol: TCP
+      port: 8123
+      targetPort: 8123

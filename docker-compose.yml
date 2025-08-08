@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    networks:
+     - clickhouse-network 
+    image: root938/clickhouse-db-using
+
+  db:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    ports:
+     - "9000:9000"
+     - "8123:8123"
+    networks:
+     - clickhouse-network
+    environment:
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: admin
+      CLICKHOUSE_DB: mydb
+
+networks:
+   clickhouse-network:

@@ -1,0 +1,2 @@
+Flask==2.3.3
+clickhouse-driver==0.2.6

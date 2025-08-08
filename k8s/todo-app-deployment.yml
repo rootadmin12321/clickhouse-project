@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+   name: flask-deployment 
+   namespace: clickhouse
+spec:
+   replicas: 1
+   selector: 
+     matchLabels:
+       app: flask-apps
+   template:
+     metadata:
+       labels:
+         app: flask-apps
+     spec:
+       containers:
+        - name: flask-app
+          image: root938/clickhouse-db-using:latest
+          ports:
+           - containerPort: 5000
+          
